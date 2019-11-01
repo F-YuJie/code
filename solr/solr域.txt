@@ -1,0 +1,31 @@
+
+	<!-- 普通域 
+		name :指定域的名称
+		type :指定域的类型
+		indexed	: 是否索引
+		stored : 是否存储
+		required : 是否必须
+		multiValued : 是否多值
+	-->
+	<field name="item_goodsid" type="long" indexed="true" stored="true"/>
+	<field name="item_title" type="string" indexed="true" stored="true"/>
+	<field name="item_price" type="double" indexed="true" stored="true"/>
+	<field name="item_image" type="string" indexed="false" stored="true" />
+	<field name="item_category" type="string" indexed="true" stored="true" />
+	<field name="item_seller" type="string" indexed="true" stored="true" />
+	<field name="item_brand" type="string" indexed="true" stored="true" />
+	<field name="item_updatetime" type="date" indexed="true" stored="true" />
+	
+	<!-- 作为查询条件的域 -->
+	<field name="item_keywords" type="text_ik" indexed="true" stored="false" multiValued="true"/>
+	
+	<!-- 复制域 
+		使用source指定要复制的普通域、dest指定目标域
+	-->
+	<copyField source="item_title" dest="item_keywords"/>
+	<copyField source="item_category" dest="item_keywords"/>
+	<copyField source="item_seller" dest="item_keywords"/>
+	<copyField source="item_brand" dest="item_keywords"/>
+
+	<!-- 动态域 -->
+	<dynamicField name="item_spec_*" type="string" indexed="true" stored="true" />

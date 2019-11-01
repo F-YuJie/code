@@ -1,0 +1,57 @@
+Solr 是 基于lucene为核心 的搜索服务器。 Solr4支持NoSQL.
+依赖于Servlet容器运行。
+具有类似REST风格的 HTTP/XML 和JSON 的API
+
+core 相当于仓库 存储点
+
+http://localhost:8080/solr/ 访问本地服务器。  端口号根据依赖的tomcat 改变
+
+/*****************************************************************************/
+
+Solr的菜单栏介绍如下：
+
+（配图地址）
+https://upload-images.jianshu.io/upload_images/15061241-806972852dfb9ee8.png?imageMogr2/auto-orient/strip|imageView2/2
+
+    Dashboadr：仪表盘，显示了该Solr实例开始启动的运行时间、版本、系统资源、JVM等信息
+    Logging：日志记录，显示Solr运行出现的异常或错误，正常状态为一个不停转圈的小图标。可以更改日志记录级别。
+    Core Admin：Solr的核心管理界面，在这里可以添加SolrCore实例。
+	主要有Add Core(添加核心)、Unload(卸载核心)、Rename(重命名核心)、Reload(重新加载核心)等功能按钮。Add Core会在solr-home对应的文件夹生成一个core.properties配置文件和data文件夹。
+    Java Properties：Solr在JVM运行环境中的属性信息，包括类路径、文件编码、JVM内存设置等信息。
+    Thread Dump：显示Solr Server中当前活跃的线程信息，同时也可以跟踪线程运行栈信息。
+    Core selector(重点)：需要在Core Admin添加了core才有此选项
+
+上面的大部分了解即可，需要重点了解下Core selector，其中包括了大部分信息，先分别简单介绍一下：
+
+    Overview：core相关信息；
+    Analysis： 通过此按钮的界面可以测试索引分析器和搜索分析器的执行情况(注：分析器是绑定在域的类型中的，我们将在managed-schema中配置IK分词器)；
+    Dataimport：可以自定义数据导入处理器，能从关系型数据库将数据导入到Solr索引库中，需要手动配置；
+    Documents：提供一个简单的表单，允许您直接从浏览器执行各种Solr索引命令(创建、更新、删除、查询索引等操作)
+    Files：显示当前的核心配置文件，例如solrconfig.xml
+    Query：允许您提交有关核心的各种元素的结构化查询
+	
+/*****************************************************************************/
+
+Query 输入框作用如下：
+
+q：(query)查询的关键字，此参数最为重要，例如输入*:*代表返回所有数据，多个参数可以用AND和OR连接；
+fq：(filter query)过滤查询，可以将q查询出结果用fq输入的参数筛选一遍。比如q查询出所有商品，而fq可以指定查询给定价格区间里的商品：prod_price:[100 TO 200]
+sort：排序方式，例如prod_price desc代表按照prod_price降序排列，asc升序。
+start：指定返回结果的从第几条记录开始，一般分页时使用，默认从0开始；
+rows：指定返回结果最多有多少条记录，默认为10，与start配合实现分页；
+fl：仅回显给定的域，用逗号或空格分隔且区分大小写，例如输入prod_name,prod_picture,prod_price则只返回这3个域；
+df：指定默认域，当指定默认域后，q中只写具体域值即可。例如本来p中需要输入prod_name:手机，当df输入prod_name后，则p中只需给定手机值即可；
+hl：高亮显示。
+
+/*****************************************************************************/
+
+SolrJ
+<dependency>
+  <groupId>org.apache.solr</groupId>
+  <artifactId>solr-solrj</artifactId>
+  <version>7.1.0</version>
+</dependency>
+
+
+0-
+
