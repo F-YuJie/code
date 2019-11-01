@@ -1,0 +1,127 @@
+#端口号
+server:
+ port: 8080
+
+#数据源
+	spring:
+	 application:
+		name: register-center
+	 datasource:
+	   driverClassName: com.mysql.cj.jdbc.Driver
+	   username: root
+	   password: 123
+	   url: jdbc:mysql://localhost:3306/springboottest?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+	 mvc:
+		view:
+		  prefix: /WEB-INF/jsp
+		  suffix: .jsp
+		static-path-pattern: static/**
+	  jpa:
+		database: mysql
+		hibernate:
+		  ddl-auto: update
+		show-sql: true
+	  jackson:
+		data-form: yyyy-MM-dd
+		time-zone: GMT+8
+	  data:
+		mongodb:
+		  host: 127.0.0.1
+		  database: goodsdb
+		
+	  data:
+		elasticsearch:
+		  cluster-nodes: 192.168.142.129:9300
+	  jwt:
+	    config:
+		  key: bwei
+		  ttl: 360000
+	 
+	  feign:
+	    hystrix:
+		  enabled: true
+		  
+	  data:
+		solr:
+		  host: http://localhost:8080/solr/collection1    #指定具体的Core
+		  repositories:
+			enabled: true
+		  
+		  
+
+		#邮箱
+  mail:
+    username: 958331838@qq.com
+    password: itghdqoowqhobdgh
+    host: smtp.qq.com
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+			
+	thymeleaf:
+		prefix: classpath:/static/templates/
+		suffix: .html
+		encoding: UTF-8
+		servlet:
+		  content-type: text/html
+		cache: false
+		
+eureka:
+  client:
+	registerWithEureka: false #是否将自己注册到Eureka服务中，本身就是所有无需注册
+	fetchRegistry: false #是否从Eureka中获取注册信息
+  service-url:
+	defaultZone: http://localhost:10086/eureka/ #Eureka客户端与Eureka服务端进行交互的地址
+  instance:
+	lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+	lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+	prefer-ip-address: true
+
+
+zuul:
+  routes:
+    user-consumer:
+      path: /consumer/** #配置请求的URL的请求规则
+      serviceId: user-consumer #指定Eureka注册中心中的服务id
+
+ribbon:
+  ConnectTimeout: 250 # 连接超时时间(ms)
+  ReadTimeout: 2000 # 通信超时时间(ms)
+  OkToRetryOnAllOperations: true # 是否对所有操作重试
+  MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
+  MaxAutoRetries: 1 # 同一实例的重试次数
+  
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 10000 # 熔断超时时长：10s
+zuul:
+  prefix: /api # 添加路由前缀
+  retryable: true
+  routes:
+    item-service: /item/** # 将商品微服务映射到/item/**
+#    auth-service: /auth/** # 授权中心微服务
+    search-service: /search/** # 搜索微服务
+  ignored-services: #忽略某些服务，网关不再转发请求
+    - upload-service
+  add-host-header: true #w网关转发请求时候带上原来的请求头信息
+  sensitive-headers:  #设置敏感头信息为空
+  
+rabbitmq:
+	virtual-host: /
+	username: guest
+	password: guest
+	port: 5672
+	
+leyou:
+  jwt:
+    pubKeyPath: D:\\lessions\\rsatest\\rsa.pub # 公钥地址
+    expire: 300 # 过期时间,单位分钟
+    cookieMaxAge: 30000 # 单位秒
+    cookieName: LY_TOKEN
+	 
